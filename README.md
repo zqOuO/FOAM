@@ -1,0 +1,94 @@
+# FOAM: Blocked State Folding for Memory-Efficient LLM Training
+
+This repo contains the official implementation for paper *FOAM: Blocked State Folding for Memory-Efficient LLM Training*.
+
+<div style="display: flex; justify-content: space-between; gap: 1px; flex-wrap: wrap;">
+  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
+    <img src="figures/foam_preview.png" alt="Image 1" style="width: 100%;"/>
+    <figcaption>FOAM preview.</figcaption>
+  </figure>
+  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
+    <img src="figures/optimizer_memory_usage.png" alt="Image 3" style="width: 100%;"/>
+    <figcaption>End to end memory estimate, BF16.</figcaption>
+  </figure>
+  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
+    <img src="figures/llama1b_validation.png" alt="Image 2" style="width: 100%;"/>
+    <figcaption>PPL learning curves for pre-training LLaMA-1.3B on C4.</figcaption>
+  </figure>
+</div>
+
+
+
+## Reproducibility
+
+All pre-training experiments were conducted using 1 to 32 NVIDIA RTX 3090 GPUs and 4 NVIDIA H100 GPUs with PyTorch version 2.3.0+cu118.  run
+
+```bash
+conda create $yourname python=3.11.9
+conda activate $yourname
+pip install -r requirements
+```
+
+We present the running scripts for pre-training LLaMA models in [here](sripts/). For fine-tuning RoBERTa models on GLUE, run
+
+```bash
+#!/bin/bash
+
+export model_name_or_path=roberta-large
+export warm_up=0.1
+export task_name=cola
+export epoch=3
+export max_length=256
+export level=8
+export scale=2.5e-1
+export scheduler=cosine
+
+export scale=0.25
+for lr in 2.0e-4
+do
+    for task_name in cola
+    do
+        python run_glue.py \
+            --model_name_or_path $model_name_or_path \
+            --task_name $task_name \
+            --scale $scale \
+            --enable_fold \
+            --level $level \
+            --lora_all_modules \
+            --max_length $max_length \
+            --seed 42 \
+            --lr_scheduler_type $scheduler \
+            --num_warmup_steps $warm_up \
+            --per_device_train_batch_size 32 \
+            --learning_rate $lr \
+            --num_train_epochs $epoch \
+            --output_dir $your_dir
+        wait
+    done
+done
+```
+
+For the MMLU fine-tuning tasks, we adopt the implementation of LLaMA-Factory, see
+
+```latex
+@inproceedings{zheng2024llamafactory,
+  title={LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models},
+  author={Yaowei Zheng and Richong Zhang and Junhao Zhang and Yanhan Ye and Zheyan Luo and Zhangchi Feng and Yongqiang Ma},
+  booktitle={Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 3: System Demonstrations)},
+  address={Bangkok, Thailand},
+  publisher={Association for Computational Linguistics},
+  year={2024},
+  url={http://arxiv.org/abs/2403.13372}
+}
+```
+
+Citation
+
+```latex
+@article{wen2025foam,
+  title={FOAM: Blocked State Folding for Memory-Efficient LLM Training},
+  author={Wen, Ziqing and Wang, Jiahuan and Luo, Ping and Li, Dongsheng and Sun, Tao},
+  journal={arXiv preprint arXiv:2512.07112},
+  year={2025}
+}
+```
