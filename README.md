@@ -2,20 +2,18 @@
 
 This repo contains the official implementation for paper *FOAM: Blocked State Folding for Memory-Efficient LLM Training*.
 
-<div style="display: flex; justify-content: space-between; gap: 1px; flex-wrap: wrap;">
-  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
-    <img src="figures/foam_preview.png" alt="Image 1" style="width: 100%;"/>
-    <figcaption>FOAM preview.</figcaption>
-  </figure>
-  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
-    <img src="figures/optimizer_memory_usage.png" alt="Image 3" style="width: 100%;"/>
-    <figcaption>End to end memory estimate, BF16.</figcaption>
-  </figure>
-  <figure style="text-align: center; width: calc(33.333% - 0.666px); margin: 0;">
-    <img src="figures/llama1b_validation.png" alt="Image 2" style="width: 100%;"/>
-    <figcaption>PPL learning curves for pre-training LLaMA-1.3B on C4.</figcaption>
-  </figure>
-</div>
+<table>
+  <tr>
+    <td align="center"><b>FOAM preview</b></td>
+    <td align="center"><b>End to end memory estimate, BF16</b></td>
+    <td align="center"><b>PPL learning curves for pre-training LLaMA-1.3B on C4</b></td>
+  </tr>
+  <tr>
+    <td width="33%"><img src="figures/foam_preview.png" /></td>
+    <td width="33%"><img src="figures/optimizer_memory_usage.png" /></td>
+    <td width="33%"><img src="figures/llama1b_validation.png" /></td>
+  </tr>
+</table>
 
 
 
