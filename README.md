@@ -1,6 +1,6 @@
 # FOAM: Blocked State Folding for Memory-Efficient LLM Training
 
-This repo contains the official implementation for the paper *[FOAM: Blocked State Folding for Memory-Efficient LLM Training](https://arxiv.org/abs/2512.07112)*.
+This repo contains the official implementation for the ICML 2026 paper *[FOAM: Blocked State Folding for Memory-Efficient LLM Training](https://arxiv.org/abs/2512.07112)*.
 
 <table>
   <tr>
